@@ -11,7 +11,7 @@ export class AwsCodepipelineProjectStack extends cdk.Stack {
     const pipeline = new CodePipeline(this, 'Pipeline', {
       pipelineName: "CDKTestPipeline", // Creating a new code pipeline which is a contstruct 
       synth: new ShellStep('Synth', {  // Add a new synthesis 'shellstep' which will be pointed at our github repository
-        input: CodePipelineSource.gitHub('renegmed/aws-codepipeline-project', 'with_lambda'), // replace the GithHub repository 
+        input: CodePipelineSource.gitHub('renegmed/aws-codepipeline-project', 'master'), // replace the GithHub repository 
 
           // The build steps for the pipeline are defined by these commands
 
