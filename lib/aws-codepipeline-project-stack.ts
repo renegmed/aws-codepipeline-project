@@ -2,6 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import { CDKPipelineStage } from './stage';
+import { ManualApprovalStep } from 'aws-cdk-lib/pipelines';
 
 export class AwsCodepipelineProjectStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -27,6 +28,17 @@ export class AwsCodepipelineProjectStack extends cdk.Stack {
       npx cdk synth - to synthesize whatever we have in the cloud formation stack to generate 
               the self mutating pipeline.
     */
+
+    // add the following code snippet to pass the stage that calls lambda 
+
+    const testStage = pipeline.addStage(new CDKPipelineStage(this, "test", {
+      env: { account: "731833107751", region: "us-east-1"}
+    }));
+
+    testStage.addPost(new ManualApprovalStep('Manual approval step'));
  
+    const productionStage = pipeline.addStage(new CDKPipelineStage(this, "production", {
+      env: { account: "731833107751", region: "us-east-1"}
+    }));
   }
 }
