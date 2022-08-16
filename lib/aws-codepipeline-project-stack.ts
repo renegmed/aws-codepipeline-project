@@ -1,15 +1,16 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
+import { CDKPipelineStage } from './stage';
 
 export class AwsCodepipelineProjectStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
     
-    new CodePipeline(this, 'Pipeline', {
+    const pipeline = new CodePipeline(this, 'Pipeline', {
       pipelineName: "CDKTestPipeline", // Creating a new code pipeline which is a contstruct 
       synth: new ShellStep('Synth', {  // Add a new synthesis 'shellstep' which will be pointed at our github repository
-        input: CodePipelineSource.gitHub('renegmed/aws-codepipeline-project', 'master'), // replace the GithHub repository 
+        input: CodePipelineSource.gitHub('renegmed/aws-codepipeline-project', 'with_lambda'), // replace the GithHub repository 
 
           // The build steps for the pipeline are defined by these commands
 
@@ -26,5 +27,6 @@ export class AwsCodepipelineProjectStack extends cdk.Stack {
       npx cdk synth - to synthesize whatever we have in the cloud formation stack to generate 
               the self mutating pipeline.
     */
+ 
   }
 }
